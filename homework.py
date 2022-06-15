@@ -13,7 +13,11 @@ class InfoMessage:
         self.calories = calories
 
     def get_message(self):
-       return f'Тип тренировки: {self.training_type}; Длительность: {round(self.duration, 3)} ч.; Дистанция: {round(self.distance, 3)} км; Ср. скорость: {round(self.speed, 3)} км/ч; Потрачено ккал: {round(self.calories, 3)}. '
+       return f'Тип тренировки: {self.training_type};\
+Длительность: {round(self.duration, 3)} ч.;\
+Дистанция: {round(self.distance, 3)}км;\
+Ср. скорость: {round(self.speed, 3)} км/ч;\
+Потрачено ккал: {round(self.calories, 3)}. '
 
 class Training:
     """Базовый класс тренировки."""
