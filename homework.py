@@ -78,6 +78,8 @@ class Running(Training):
 
 class SportsWalking(Training):
     """Тренировка: спортивная ходьба."""
+    COEFF_CALORIE_5 = 2
+    COEFF_CALORIE_6 = 0.0029
 
     def __init__(self,
                  action: int,
@@ -90,8 +92,9 @@ class SportsWalking(Training):
     def get_spent_calories(self) -> float:
         coeff_calorie_2 = (
             (0.035 * self.weight
-             + (self.get_mean_speed()**2 // self.height)
-             * 0.029 * self.weight) * (self.duration * self.MIN_IN_HOUR))
+             + (self.get_mean_speed()**self.COEFF_CALORIE_5 // self.height)
+             * self.COEFF_CALORIE_6 * self.weight)
+            * (self.duration * self.MIN_IN_HOUR))
         return coeff_calorie_2
 
 
@@ -99,6 +102,8 @@ class Swimming(Training):
     """Тренировка: плавание."""
 
     LEN_STEP = 1.38
+    COEFF_CALORIE_3 = 1.1
+    COEFF_CALORIE_4 = 2
 
     def __init__(self,
                  action: int,
@@ -111,13 +116,12 @@ class Swimming(Training):
         self.count_pool = count_pool
 
     def get_mean_speed(self) -> float:
-        coeff_calorie_3 = (
-            self.length_pool * self.count_pool
-            / self.M_IN_KM / self.duration)
-        return coeff_calorie_3
+        return (self.length_pool * self.count_pool
+                / self.M_IN_KM / self.duration)
 
     def get_spent_calories(self) -> float:
-        return (self.get_mean_speed() + 1.1) * 2 * self.weight
+        return ((self.get_mean_speed() + self.COEFF_CALORIE_3)
+                * self.COEFF_CALORIE_4 * self.weight)
 
 
 def read_package(workout_type: str, data: list[Union[int, float]]) -> Training:
@@ -141,7 +145,7 @@ if __name__ == '__main__':
     packages = [
         ('SWM', [720, 1, 80, 25, 40]),
         ('RUN', [15000, 1, 75]),
-        ('WLK', [9000, 1, 75, 180]),
+        ('WLK', [9000, 1, 75, 180])
     ]
 
     for workout_type, data in packages:
