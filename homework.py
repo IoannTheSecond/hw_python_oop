@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Union
+from typing import Union, List, Dict
 
 
 @dataclass
@@ -124,10 +124,10 @@ class Swimming(Training):
                 * self.COEFF_CALORIE_4 * self.weight)
 
 
-def read_package(workout_type: str, data: list[Union[int, float]]) -> Training:
+def read_package(workout_type: str, data: List[Union[int, float]]) -> Training:
     """Прочитать данные полученные от датчиков."""
 
-    packages: dict[str, Training] = {
+    packages: Dict[str, Training] = {
         'SWM': Swimming,
         'RUN': Running,
         'WLK': SportsWalking
@@ -151,6 +151,7 @@ if __name__ == '__main__':
     for workout_type, data in packages:
         try:
             training = read_package(workout_type, data)
-            main(training)
         except KeyError as error:
             print(f'Такого вида тренировки как {error} у нас нет!')
+        else:
+            main(training)
