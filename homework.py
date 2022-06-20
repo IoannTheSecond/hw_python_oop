@@ -78,6 +78,7 @@ class Running(Training):
 
 class SportsWalking(Training):
     """Тренировка: спортивная ходьба."""
+
     COEFF_CALORIE_5 = 2
     COEFF_CALORIE_6 = 0.0029
 
@@ -92,7 +93,7 @@ class SportsWalking(Training):
     def get_spent_calories(self) -> float:
         coeff_calorie_2 = (
             (0.035 * self.weight
-             + (self.get_mean_speed()**self.COEFF_CALORIE_5 // self.height)
+             + (self.get_mean_speed() ** self.COEFF_CALORIE_5 // self.height)
              * self.COEFF_CALORIE_6 * self.weight)
             * (self.duration * self.MIN_IN_HOUR))
         return coeff_calorie_2
@@ -126,8 +127,7 @@ class Swimming(Training):
 
 def read_package(workout_type: str, data: List[Union[int, float]]) -> Training:
     """Прочитать данные полученные от датчиков."""
-
-    packages: Dict[str, Training] = {
+    packages: Dict[str, Type[Training]] = {
         'SWM': Swimming,
         'RUN': Running,
         'WLK': SportsWalking
@@ -151,7 +151,7 @@ if __name__ == '__main__':
     for workout_type, data in packages:
         try:
             training = read_package(workout_type, data)
-        except KeyError as error:
-            print(f'Такого вида тренировки как {error} у нас нет!')
+        except KeyError as workout_type:
+            print(f'Такого вида тренировки как {workout_type} у нас нет!')
         else:
             main(training)
